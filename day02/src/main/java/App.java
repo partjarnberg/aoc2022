@@ -10,12 +10,12 @@ public class App {
         long outcome() {
             return you.score + (you.defeats(opponent) ? 6 : opponent.defeats(you) ? 0 : 3);
         }
-        static Game fromShapes(final String[] shapes) {
-            return new Game(Shape.fromLetter(shapes[0]), Shape.fromLetter(shapes[1]));
+        static Game fromShapes(final String[] data) {
+            return new Game(Shape.fromLetter(data[0]), Shape.fromLetter(data[1]));
         }
-        static Game fromStrategy(final String[] shapes) {
-            final Shape opponent = Shape.fromLetter(shapes[0]);
-            return new Game(opponent, Shape.fromStrategy(shapes[1], opponent));
+        static Game fromStrategy(final String[] data) {
+            final Shape opponent = Shape.fromLetter(data[0]);
+            return new Game(opponent, Shape.fromStrategy(data[1], opponent));
         }
     }
 

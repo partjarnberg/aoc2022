@@ -10,21 +10,21 @@ public class App {
         long outcome() {
             return you.score + (you.defeats(opponent) ? 6 : opponent.defeats(you) ? 0 : 3);
         }
+        static Game fromShapes(final String[] shapes) {
+            return new Game(Shape.fromLetter(shapes[0]), Shape.fromLetter(shapes[1]));
+        }
+        static Game fromStrategy(final String[] shapes) {
+            final Shape opponent = Shape.fromLetter(shapes[0]);
+            return new Game(opponent, Shape.fromStrategy(shapes[1], opponent));
+        }
     }
 
     long solvePart1(final Stream<String> lines) {
-        return lines.map(line -> {
-            final String[] shapes = line.split(" ");
-            return new Game(Shape.fromLetter(shapes[0]), Shape.fromLetter(shapes[1]));
-        }).mapToLong(Game::outcome).sum();
+        return lines.map(line -> Game.fromShapes(line.split(" "))).mapToLong(Game::outcome).sum();
     }
 
     long solvePart2(final Stream<String> lines) {
-        return lines.map(line -> {
-            final String[] shapes = line.split(" ");
-            final Shape opponent = Shape.fromLetter(shapes[0]);
-            return new Game(opponent, Shape.fromStrategy(shapes[1], opponent));
-        }).mapToLong(Game::outcome).sum();
+        return lines.map(line -> Game.fromStrategy(line.split(" "))).mapToLong(Game::outcome).sum();
     }
 
     public static void main(final String[] args) throws IOException {

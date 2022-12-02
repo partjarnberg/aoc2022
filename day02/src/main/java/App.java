@@ -14,20 +14,20 @@ public class App {
 
     long solvePart1(final Stream<String> lines) {
         return lines.map(line -> {
-            String[] shapes = line.split(" ");
+            final String[] shapes = line.split(" ");
             return new Game(Shape.fromLetter(shapes[0]), Shape.fromLetter(shapes[1]));
-        }).map(Game::outcome).reduce(0L, Long::sum);
+        }).mapToLong(Game::outcome).sum();
     }
 
     long solvePart2(final Stream<String> lines) {
         return lines.map(line -> {
-            String[] shapes = line.split(" ");
-            Shape opponent = Shape.fromLetter(shapes[0]);
+            final String[] shapes = line.split(" ");
+            final Shape opponent = Shape.fromLetter(shapes[0]);
             return new Game(opponent, Shape.fromStrategy(shapes[1], opponent));
-        }).map(Game::outcome).reduce(0L, Long::sum);
+        }).mapToLong(Game::outcome).sum();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(final String[] args) throws IOException {
         final Stream<String> lines = Files.lines(Path.of("input.txt"));
         System.out.println("part2".equalsIgnoreCase(getenv("part")) ? new App().solvePart2(lines) : new App().solvePart1(lines));
     }

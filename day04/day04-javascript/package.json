@@ -1,0 +1,12 @@
+{
+  "name": "day01",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "UNLICENSED",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^27.3.1"
+  }
+}

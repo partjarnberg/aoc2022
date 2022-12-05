@@ -1,4 +1,4 @@
-FROM erlang:alpine as BASE
+FROM erlang:25.1.2.0-alpine as BASE
 WORKDIR /src
 COPY ["./src/main.erl", "./input.txt", "./"]
 RUN erlc main.erl

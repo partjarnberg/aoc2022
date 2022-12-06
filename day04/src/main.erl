@@ -12,8 +12,8 @@ start() ->
 
 solve() ->
   receive
-    {part1, Input} -> erlang:display(length(lists:filter(fun ([_H |[_T]]) -> find_all(_H, _T) end, Input)));
-    {part2, Input} -> erlang:display(length(lists:filter(fun ([_H |[_T]]) -> find_any(_H, _T) end, Input)))
+    {part1, Input} -> erlang:display(length(lists:filter(fun ([Head|[Tail]]) -> find_all(Head, Tail) end, Input)));
+    {part2, Input} -> erlang:display(length(lists:filter(fun ([Head|[Tail]]) -> find_any(Head, Tail) end, Input)))
   end.
 
 find_all(First, Second) ->
@@ -26,8 +26,8 @@ find_any(First, Second) ->
   lists:any(fun (Elem) -> lists:member(Elem, Second) end, First).
 
 range_in_compartment(Compartment) ->
-  _Temp = re:split(Compartment, "-"),
-  lists:seq(binary_to_integer(lists:nth(1, _Temp)), binary_to_integer(lists:nth(2, _Temp))).
+  [Head, Tail] = re:split(Compartment, "-"),
+  lists:seq(binary_to_integer(Head), binary_to_integer(Tail)).
 
 read_lines_into_list(Filename) ->
   {ok, Data} = file:read_file(Filename),

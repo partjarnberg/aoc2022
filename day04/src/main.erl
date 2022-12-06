@@ -4,40 +4,26 @@
 
 start() ->
   Input = read_lines_into_list("input.txt"),
-  Part = os:getenv("part", "part1"),
   Worker = spawn(main, solve,[]),
-  if
-  Part == "part2" ->
-    Worker ! {part2, Input};
-  true ->
-    Worker ! {part1, Input}
+  case os:getenv("part", "part1") of
+    "part1" -> Worker ! {part1, Input};
+    "part2" -> Worker ! {part2, Input}
   end.
 
 solve() ->
   receive
-    {part1, Input} ->
-      Filtered = lists:filter(fun ([_First|[_Second]]) -> find_all(_First, _Second) end, Input),
-      erlang:display(length(Filtered));
-    {part2, Input} ->
-      Filtered = lists:filter(fun ([_First|[_Second]]) -> find_any(_First, _Second) end, Input),
-      erlang:display(length(Filtered))
+    {part1, Input} -> erlang:display(length(lists:filter(fun ([_H |[_T]]) -> find_all(_H, _T) end, Input)));
+    {part2, Input} -> erlang:display(length(lists:filter(fun ([_H |[_T]]) -> find_any(_H, _T) end, Input)))
   end.
 
 find_all(First, Second) ->
-  FirstPartOfSecond = lists:all(fun (Elem) -> lists:member(Elem, Second) end, First),
-  if
-    FirstPartOfSecond -> true;
-    true ->
-      SecondPartOfFirst = lists:all(fun (Elem) -> lists:member(Elem, First) end, Second),
-      SecondPartOfFirst
+  case lists:all(fun (Elem) -> lists:member(Elem, Second) end, First) of
+    true -> true;
+    false -> lists:all(fun (Elem) -> lists:member(Elem, First) end, Second)
   end.
 
 find_any(First, Second) ->
-  FirstPartOfSecond = lists:any(fun (Elem) -> lists:member(Elem, Second) end, First),
-  if
-    FirstPartOfSecond -> true;
-    true -> false
-  end.
+  lists:any(fun (Elem) -> lists:member(Elem, Second) end, First).
 
 range_in_compartment(Compartment) ->
   _Temp = re:split(Compartment, "-"),
@@ -45,4 +31,6 @@ range_in_compartment(Compartment) ->
 
 read_lines_into_list(Filename) ->
   {ok, Data} = file:read_file(Filename),
-  lists:map(fun(Rucksack) -> lists:map(fun (Compartment) -> range_in_compartment(Compartment) end, Rucksack) end, lists:map(fun (Row) -> re:split(Row, ",") end, re:split(Data,"\n"))).
+  lists:map(fun(Rucksack) ->
+    lists:map(fun (Compartment) -> range_in_compartment(Compartment) end, Rucksack) end,
+    lists:map(fun (Row) -> re:split(Row, ",") end, re:split(Data,"\n"))).

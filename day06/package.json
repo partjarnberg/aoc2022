@@ -1,10 +1,10 @@
 {
-  "name": "day04",
+  "name": "day06",
   "version": "1.0.0",
   "main": "index.js",
   "license": "UNLICENSED",
   "scripts": {
-    "test": "jest"
+    "test": "../day01/node_modules/.bin/jest"
   },
   "devDependencies": {
     "jest": "^27.3.1"

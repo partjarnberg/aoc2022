@@ -2,6 +2,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     id 'java'
+    id 'org.graalvm.buildtools.native' version '0.9.19'
 }
 
 group 'se.cygni.aoc'
@@ -11,25 +12,33 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation('com.google.guava:guava:31.1-jre')
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-}
-
 application {
     // Define the main class for the application.
-    mainClass = 'App'
+    mainClass.set('App')
 }
 
-jar {
-    manifest {
-        attributes(
-                'Main-Class': 'App'
-        )
+dependencies {
+    implementation('com.google.guava:guava:31.1-jre')
+}
+
+graalvmNative {
+    agent {
+        defaultMode = "standard"
     }
-}
-
-test {
-    useJUnitPlatform()
+    binaries {
+        main {
+            imageName.set("my-app")
+            mainClass.set("App")
+            fallback.set(false)
+            javaLauncher = javaToolchains.launcherFor {
+                languageVersion = JavaLanguageVersion.of(17)
+            }
+            useFatJar.set(true)
+            verbose = true
+        }
+    }
+    metadataRepository {
+        enabled = true
+    }
+    toolchainDetection = false
 }

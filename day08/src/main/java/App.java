@@ -16,7 +16,7 @@ public class App {
 
     long solvePart2(final TreeGrid treeGrid) {
         return Set.copyOf(concat(treeGrid.columns.values().stream().flatMap(Collection::stream), treeGrid.columns.values().stream().flatMap(Collection::stream)).toList())
-                .stream().mapToLong(treeGrid::scenicScoreFor).max().getAsLong();
+                .stream().mapToLong(treeGrid::scenicScoreFor).max().orElseThrow();
     }
 
     public static void main(final String[] args) throws IOException {
@@ -78,7 +78,6 @@ public class App {
                 if(row.get(index).height >= tree.height)
                     break;
             }
-            //System.out.println("up * down * left * right = " + up + " * " + down + " * " + left + " * " + right);
             return up * down * left * right;
         }
 
@@ -118,14 +117,6 @@ public class App {
                 }
             });
             return visible;
-        }
-
-        @Override
-        public String toString() {
-            return "TreeGrid{" +
-                    "columns=" + columns +
-                    ", rows=" + rows +
-                    '}';
         }
     }
 }

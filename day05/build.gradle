@@ -1,5 +1,4 @@
 plugins {
-    // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     id 'java'
     id 'org.graalvm.buildtools.native' version '0.9.19'
@@ -13,8 +12,7 @@ repositories {
 }
 
 application {
-    // Define the main class for the application.
-    mainClass.set('App')
+    mainClass = "App"
 }
 
 dependencies {
@@ -27,14 +25,12 @@ graalvmNative {
     }
     binaries {
         main {
-            imageName.set("my-app")
-            mainClass.set("App")
-            fallback.set(false)
+            imageName = "my-app"
+            mainClass = "App"
             javaLauncher = javaToolchains.launcherFor {
                 languageVersion = JavaLanguageVersion.of(17)
             }
-            useFatJar.set(true)
-            verbose = true
+            useFatJar = true
         }
     }
     metadataRepository {
